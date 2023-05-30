@@ -1,0 +1,268 @@
+<ion-header>
+  <div class="saveBox">
+    <div class="back_btn">
+      <ion-icon ios="md-arrow-round-back"><img id="titleLogo" src="assets/imgs/logo_white.png"/></ion-icon>
+    </div>
+    <div class="top_text">고객정보</div>
+    <div class="saveBtn" [hidden]="saveStat">
+      <img id="newhollandLogo" src="assets/imgs/new_holland_logo.png"/>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content padding>
+  <div class="infoBox">
+    <table>
+      <tr>
+        <td colspan="2" class="title_text">진단(점검)일자</td>
+        <td colspan="3" style="text-align: left;">
+          <ion-datetime #picker class="info_input date_input" displayFormat="YYYY-MM-DD" [disabled]="readStat" [(ngModel)]="fildData.DiagDate" [max]="maxData" (ngModelChange)="checkDar()"></ion-datetime>
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="readStat" (click)="picker.open()"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" rowspan="2" class="title_text">진단 담당자</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.DiagStafNmview">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.DiagStafNmview" [disabled]="userType" (click)="userSearch()">
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="userType" (click)="userSearch()"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.DiagStafNm">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.DiagStafNm" [disabled]="userType">
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="6" class="title_text">고객<br>정보</td>
+        <td class="title_text">성명</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.CustName">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.CustName">
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">전화번호</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.CustHp">
+          <input type="text" class="info_input input_com" (keyup)="phoneNum($event)" [(ngModel)]="fildData.CustHp">
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">이메일</td>
+        <td style="width: 7%;">
+          <input type="hidden" [(ngModel)]="fildData.CustEmail1">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.CustEmail1">
+        </td>
+        <td class="title_text" style="text-align: center; width: 0%;">@</td>
+        <td>
+          <input type="hidden" [(ngModel)]="fildData.CustEmail2Nm">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.CustEmail2Nm" placeholder = "직접입력">
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="userType" (click)="codeSearch('MAIN_EMAIL')"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="2" class="title_text">주소</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.CustAddr1">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.CustAddr1" [disabled]="userType">
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="userType"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.CustAddr2">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.CustAddr2" [disabled]="userType">
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">연령대</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.AgeGrupNm">
+          <input type="text" class="info_input input_com"  [(ngModel)]="fildData.AgeGrupNm" [disabled]="userType" (click)="codeSearch('AGE_GRUP')">
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="userType" (click)="codeSearch('AGE_GRUP')"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="6" class="title_text">트랙터<br>정보</td>
+        <td class="title_text">모델명</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.ModlCode">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.ModlCode" [disabled]="userType">
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">차대번호</td>
+        <td style="width: 10%;" colspan="2">
+          <input type="hidden" [(ngModel)]="fildData.VehiNum1">
+          <input type="text" style="width: 80%;" class="info_input input_com" placeholder = "LSMtron #" [(ngModel)]="fildData.VehiNum1" [disabled]="userType">
+          <span class="qrCode"> <ion-icon class="qrIcon" name="barcode" (click)="codeInfoBtn()"></ion-icon> </span>
+        </td>
+        <td style="width: 10%;">
+          <input type="hidden" [(ngModel)]="fildData.VehiNum2">
+          <input type="text" class="info_input input_com" placeholder = "CNH #" [(ngModel)]="fildData.VehiNum2" [disabled]="userType">
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">구입년도</td>
+        <td colspan="3">
+          <input type="hidden" [(ngModel)]="fildData.PurcYearNm">
+          <input type="text" class="info_input input_com" [(ngModel)]="fildData.PurcYearNm" [disabled]="userType" (click)="codeSearch('PURC_YEAR')">
+          <span class="addBtn">
+            <ion-icon ios="ios-search" md="md-search" [hidden]="userType" (click)="codeSearch('PURC_YEAR')"></ion-icon>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">사용시간</td>
+        <td colspan="2">
+          <input type="hidden" [(ngModel)]="fildData.UsePeri">
+          <input type="text" class="info_input input_com"  [(ngModel)]="fildData.UsePeri" [disabled]="userType">
+        </td>
+        <td>
+          <span>Hr</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">구매 형태</td>
+        <td colspan="3" style="text-align: left; font-size: 13px;padding-right: 0;padding-left: 5px;">
+          <input type="hidden" [(ngModel)]="fildData.PurcType">
+          <table class="checkbox-wrap">
+            <colgroup>
+              <col width="33.3%"/>
+              <col width="33.3%"/>
+              <col width="33.3%"/>
+            </colgroup>
+            <tr>
+              <td>
+                <input class="check_box" id= "PurcType1" type="checkbox" >
+                <label for="PurcType1">신품 구매</label>
+              </td>
+              <td>
+                <input class="check_box" id= "PurcType2" style="margin-left: 6px;" type="checkbox">
+                <label for="PurcType2">중고 구매</label>
+              </td>
+              <td>
+                <input class="check_box" id= "PurcType3" style="margin-left: 6px;" type="checkbox">
+                <label for="PurcType3">임대 사용</label>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="title_text">구매 경로</td>
+        <td colspan="3" style="text-align: left; font-size: 13px;padding-right: 0;padding-left: 5px;">
+          <input type="hidden" [(ngModel)]="fildData.PurcPath">
+          <table class="checkbox-wrap">
+            <colgroup>
+              <col width="33.3%"/>
+              <col width="33.3%"/>
+              <col width="33.3%"/>
+            </colgroup>
+            <tr>
+              <td>
+                <input class="check_box" id= "PurcPath1" type="checkbox">
+                <label for="PurcPath1">대리점</label>
+              </td>
+              <td>
+                <input class="check_box" id= "PurcPath2" style="margin-left: 8px;" type="checkbox">
+                <label for="PurcPath2">농협</label> 
+              </td>
+              <td>
+                <input class="check_box" id= "PurcPath3" style="margin-left: 8px;" type="checkbox">
+                <label for="PurcPath3">센터</label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="">
+                <input class="check_box" id= "PurcPath4" style="margin-left: 8px;" type="checkbox">
+                <label for="PurcPath4">중고상</label>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="title_text">기타 사항</td>
+        <td colspan="3" rowspan="4" class="title_text" style="height: 120px; background-color: #fff;">
+          <textarea class="textBox" [(ngModel)]="fildData. BascRemk" placeholder="기타 사항" maxlength="3000"></textarea>
+        </td>
+      </tr>
+      </table>
+      <table>
+        <tr>
+          <td>
+            <ng-container *ngIf="fildData.diagYn == 'Y'">
+              <button class="netxbtn" ion-button color="rcvcolor" style="background: #2f5597;" (click)="Evalnext()" type="button">트랙터 진단</button>
+            </ng-container>
+            <ng-container *ngIf="fildData.diagYn != 'Y'">
+              <button class="netxbtn" ion-button color="rcvcolor" (click)="Evalnext()" type="button"> 트랙터 진단</button>
+            </ng-container>
+          </td>
+          <td>
+            <button class="netxbtn" ion-button color="rcvcolor" (click)="Farmnext()" type="button">영농 정보</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button class="netxbtn" ion-button color="rcvcolor" (click)="Worknext()" type="button">보유 작업기</button>
+          </td>
+          <td>
+            <button class="netxbtn" ion-button color="rcvcolor" (click)="Tracnext()" type="button">보유 트랙터</button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <button class="btn" ion-button color="rcvcolor" (click)="Agreemnext()" type="button">확정</button>
+          </td>
+        </tr>
+        <ng-container *ngIf="fildData.diagYn == 'Y'">
+          <tr>
+            <td>
+              <button class="kakaobtn" ion-button color="rcvcolor" (click)="GoKaKaO()" type="button">카카오톡 발송</button>
+            </td>
+            <td>
+              <button class="mesgbtn" ion-button color="rcvcolor" (click)="GoKaKaO()" type="button">문자 발송</button>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+  </div>
+</ion-content>
+
+<div class="side_btn">
+  <div id="navBtn" (click)="navBtn()">
+    <ion-icon name="add"></ion-icon>
+  </div>
+  <div [class]="logOut" (click)="logout()">
+    <ion-icon name="log-out"></ion-icon>
+  </div>
+  <div [class]="back" (click)="backLintBtn()">
+    <ion-icon name="md-arrow-round-back"></ion-icon>
+  </div>
+  <div [class]="home" (click)="homeBtn()">
+    <ion-icon name="home"></ion-icon>
+  </div>
+</div>
+
+<div [hidden]="loader" style="width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 80;">
+  <div id="loaderBox" style="width: 100%; height: 100%; position: absolute; z-index: 10; background-color: white;"></div>
+  <img id="loader" src="assets/imgs/loader.gif" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100;"/>
+</div>
+
+<div [hidden]="loader2" style="width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 80;">
+  <div id="loaderBox" style="width: 100%; height: 100%; position: absolute; z-index: 80; background-color: white; opacity: 0.5;"></div>
+  <img id="loader" src="assets/imgs/loader.gif" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100;"/>
+</div>
